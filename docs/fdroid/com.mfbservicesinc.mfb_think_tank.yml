@@ -10,14 +10,14 @@ AuthorName: MFB Services, Inc.
 AuthorEmail: rsanchezdev697@gmail.com
 AuthorWebSite: https://mfbintelligence.com/mfb-think-tank
 WebSite: https://mfbintelligence.com/mfb-think-tank
-SourceCode: https://github.com/texas697/mfb-think-tank
-IssueTracker: https://github.com/texas697/mfb-think-tank/issues
-Changelog: https://github.com/texas697/mfb-think-tank/releases
+SourceCode: https://github.com/rudysanchez-mfb/mfb-think-tank
+IssueTracker: https://github.com/rudysanchez-mfb/mfb-think-tank/issues
+Changelog: https://github.com/rudysanchez-mfb/mfb-think-tank/releases
 
 AutoName: MFB Think Tank
 
 RepoType: git
-Repo: https://github.com/texas697/mfb-think-tank.git
+Repo: https://github.com/rudysanchez-mfb/mfb-think-tank.git
 
 Builds:
   - versionName: 0.3.1
