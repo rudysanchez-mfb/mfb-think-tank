@@ -7,6 +7,7 @@ import 'package:mfb_think_tank/features/auth/data/auth_repository.dart';
 import 'package:mfb_think_tank/features/auth/presentation/auth_action.dart';
 import 'package:mfb_think_tank/features/auth/presentation/widgets/verify_email_banner.dart';
 import 'package:mfb_think_tank/features/feedback/presentation/feedback_sheet.dart';
+import 'package:mfb_think_tank/features/profile/presentation/mfb_links.dart';
 
 /// Account details, sign out and account deletion.
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -92,6 +93,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
               icon: const Icon(Icons.feedback_outlined),
               label: const Text('Send feedback'),
             ),
+            const SizedBox(height: 32),
+            const MfbLinks(),
             const SizedBox(height: 32),
             Text(
               'Danger zone',

@@ -5,6 +5,7 @@ import 'package:mfb_think_tank/features/auth/application/auth_providers.dart';
 import 'package:mfb_think_tank/features/auth/data/app_user.dart';
 import 'package:mfb_think_tank/features/auth/data/auth_repository.dart';
 import 'package:mfb_think_tank/features/profile/presentation/profile_screen.dart';
+import 'package:mfb_think_tank/features/readers_digest/application/external_link_provider.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../helpers/mocks.dart';
@@ -18,12 +19,18 @@ void main() {
         .thenAnswer((_) async {});
   });
 
+  final opened = <Uri>[];
+
   Future<void> pumpProfile(WidgetTester tester, List<String> providers) async {
     final user = fakeAppUser(providerIds: providers);
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
           authRepositoryProvider.overrideWithValue(repository),
+          externalLinkProvider.overrideWithValue((uri) async {
+            opened.add(uri);
+            return true;
+          }),
           currentUserProvider.overrideWith(
             (ref) => Stream<AppUser?>.value(user),
           ),
@@ -35,7 +42,10 @@ void main() {
   }
 
   Future<void> openDeleteDialog(WidgetTester tester) async {
-    await tester.ensureVisible(find.byKey(const Key('delete-account')));
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('delete-account')),
+      200,
+    );
     await tester.tap(find.byKey(const Key('delete-account')));
     await tester.pumpAndSettle();
   }
@@ -81,5 +91,19 @@ void main() {
     verifyNever(
       () => repository.deleteAccount(password: any(named: 'password')),
     );
+  });
+
+  testWidgets('links to MFB Labs, GitHub and LinkedIn', (tester) async {
+    await pumpProfile(tester, [AuthProviderIds.google]);
+    expect(find.text('Built by MFB Services, Inc.'), findsOneWidget);
+    for (final (key, url) in const [
+      ('mfb-link-labs', 'https://labs.mfbservicesinc.com'),
+      ('mfb-link-github', 'https://github.com/rudysanchez-mfb'),
+      ('mfb-link-linkedin', 'https://www.linkedin.com/in/rudy10sanchez/'),
+    ]) {
+      await tester.scrollUntilVisible(find.byKey(Key(key)), 200);
+      await tester.tap(find.byKey(Key(key)));
+      expect(opened.last, Uri.parse(url));
+    }
   });
 }
